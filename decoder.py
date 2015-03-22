@@ -294,41 +294,236 @@ class decoder:
             getattr(self,self.listfunc[self.listop.index(self.opc[str(int(self.PC,0))])])()
             print self.opc[str(int(self.PC,0))] 
     #data transfer
+
     #mov a,x functions
+    def mov(self,rega,regb):
+        rega = regb
+        self.incPC()
+        return rega
+ #mov commands for self.A
+ ######### mov x,x #####################
     def mov_a_a(self):
-        print "hello chitra"
-        self.A = self.A
-        self.PC = int(self.PC,0)
-        self.PC += 1
-        self.PC = hex(self.PC)
+        self.A = self.mov(self.A,self.B)
+    def mov_a_b(self):
+        self.A = self.mov(self.A,self.B)
+        print self.A
+    def mov_a_c(self):
+        self.A = self.mov(self.A,self.C)
+    def mov_a_d(self):
+        self.A = self.mov(self.A,self.D)
+    def mov_a_e(self):
+        self.A = self.mov(self.A,self.E)
+    def mov_a_h(self):
+        self.A = self.mov(self.A,self.H)
+    def mov_a_l(self):
+        self.A = self.mov(self.A,self.L)
+    def mov_a_m(self):
+        self.A = self.mov(self.A,self.M)
 
+ #  mov b,X
+    def mov_b_a(self):
+        self.B = self.mov(self.B,self.B)
+    def mov_b_b(self):
+        self.B = self.mov(self.B,self.B)
+        print self.B
+    def mov_b_c(self):
+        self.B = self.mov(self.B,self.C)
+    def mov_b_d(self):
+        self.B = self.mov(self.B,self.D)
+    def mov_b_e(self):
+        self.B = self.mov(self.B,self.E)
+    def mov_b_h(self):
+        self.B = self.mov(self.B,self.H)
+    def mov_b_l(self):
+        self.B = self.mov(self.B,self.L)
+    def mov_b_m(self):
+        self.B = self.mov(self.B,self.M)
+#mov c,x
 
+    def mov_c_a(self):
+        self.C = self.mov(self.C,self.A)
+    def mov_c_b(self):
+        self.C = self.mov(self.C,self.B)
+        print self.C
+    def mov_c_c(self):
+        self.C = self.mov(self.C,self.C)
+    def mov_c_d(self):
+        self.C = self.mov(self.C,self.D)
+    def mov_c_e(self):
+        self.C = self.mov(self.C,self.E)
+    def mov_c_h(self):
+        self.C = self.mov(self.C,self.H)
+    def mov_c_l(self):
+        self.C = self.mov(self.C,self.L)
+    def mov_c_m(self):
+        self.C = self.mov(self.C,self.M)
+#mov d,x
+    def mov_d_a(self):
+        self.A = self.mov(self.D,self.A)
+    def mov_d_b(self):
+        self.A = self.mov(self.D,self.B)
+        print self.A
+    def mov_d_c(self):
+        self.A = self.mov(self.D,self.C)
+    def mov_d_d(self):
+        self.A = self.mov(self.D,self.D)
+    def mov_d_e(self):
+        self.A = self.mov(self.D,self.E)
+    def mov_d_h(self):
+        self.A = self.mov(self.D,self.H)
+    def mov_d_l(self):
+        self.A = self.mov(self.D,self.L)
+    def mov_d_m(self):
+        self.A = self.mov(self.D,self.M)
+#mov e,x
+    def mov_e_a(self):
+        self.E = self.mov(self.E,self.A)
+    def mov_e_b(self):
+        self.E = self.mov(self.E,self.B)
+        print self.E
+    def mov_e_c(self):
+        self.E = self.mov(self.E,self.C)
+    def mov_e_d(self):
+        self.E = self.mov(self.E,self.D)
+    def mov_e_e(self):
+        self.E = self.mov(self.E,self.E)
+    def mov_e_h(self):
+        self.E = self.mov(self.E,self.H)
+    def mov_e_l(self):
+        self.E = self.mov(self.E,self.L)
+    def mov_e_m(self):
+        self.E = self.mov(self.E,self.M)
+# moc h,x
+    def mov_c_a(self):
+        self.H = self.mov(self.H,self.B)
+    def mov_c_b(self):
+        self.H = self.mov(self.H,self.B)
+        print self.H
+    def mov_c_c(self):
+        self.H = self.mov(self.H,self.C)
+    def mov_c_d(self):
+        self.H = self.mov(self.H,self.D)
+    def mov_c_e(self):
+        self.H = self.mov(self.H,self.E)
+    def mov_c_h(self):
+        self.H = self.mov(self.H,self.H)
+    def mov_c_l(self):
+        self.H = self.mov(self.H,self.L)
+    def mov_c_m(self):
+        self.H = self.mov(self.H,self.M)
+# mov l,x
+    def mov_l_a(self):
+        self.L = self.mov(self.L,self.A)
+    def mov_l_b(self):
+        self.L = self.mov(self.L,self.B)
+        print self.L
+    def mov_l_c(self):
+        self.L = self.mov(self.L,self.C)
+    def mov_l_d(self):
+        self.L = self.mov(self.L,self.D)
+    def mov_l_e(self):
+        self.L = self.mov(self.L,self.E)
+    def mov_l_h(self):
+        self.L = self.mov(self.L,self.H)
+    def mov_l_l(self):
+        self.L = self.mov(self.L,self.L)
+    def mov_l_m(self):
+        self.L = self.mov(self.L,self.M)
+# mov m,x
+    def mov_m_a(self):
+        self.M = self.mov(self.M,self.A)
+    def mov_m_b(self):
+        self.M = self.mov(self.M,self.B)
+        print self.M
+    def mov_m_c(self):
+        self.M = self.mov(self.M,self.C)
+    def mov_m_d(self):
+        self.M = self.mov(self.M,self.D)
+    def mov_m_e(self):
+        self.M = self.mov(self.M,self.E)
+    def mov_m_h(self):
+        self.M = self.mov(self.M,self.H)
+    def mov_m_l(self):
+        self.M = self.mov(self.M,self.L)
+    def mov_m_m(self):
+        self.M = self.mov(self.M,self.M)
+
+ ########## mvi a ######################
     def mvi_a(self):
-        print "mane"
-        self.PC = int(self.PC,0)
-        self.PC += 1
-        self.PC = hex(self.PC)
+        self.incPC()
         self.A = self.opc[str(int(self.PC,0))]
-        self.PC = int(self.PC,0)
-        self.PC += 1
-        self.PC = hex(self.PC)
+        self.incPC()
 
-    def lxi_b(self):
-        self.PC = int(self.PC,0)
-        self.PC += 1
-        self.PC = hex(self.PC)
+    def mvi_b(self):
+        self.incPC()
         self.B = self.opc[str(int(self.PC,0))]
-        self.PC = int(self.PC,0)
-        self.PC += 1
-        self.PC = hex(self.PC)
-        self.C = self.opc[str(int(self.PC,0))]
-        self.PC = int(self.PC,0)
-        self.PC += 1
-        self.PC = hex(self.PC)
+        self.incPC()
 
-    def add_b(self):
-        sum=hex(int('0x'+self.A,0)+int('0x'+self.B,0))[2:]
-        print sum,"sum"
+    def mvi_c(self):
+        self.incPC()
+        self.C = self.opc[str(int(self.PC,0))]
+        self.incPC()
+
+    def mvi_d(self):
+        self.incPC()
+        self.D = self.opc[str(int(self.PC,0))]
+        self.incPC()
+
+    def mvi_e(self):
+        self.incPC()
+        self.E = self.opc[str(int(self.PC,0))]
+        self.incPC()
+
+    def mvi_h(self):
+        self.incPC()
+        self.H = self.opc[str(int(self.PC,0))]
+        self.incPC()
+
+    def mvi_l(self):
+        self.incPC()
+        self.L = self.opc[str(int(self.PC,0))]
+        self.incPC()
+
+    def mvi_m(self):
+        self.incPC()
+        self.M = self.opc[str(int(self.PC,0))]
+        self.incPC()
+
+
+############# lxi_xx ##########################
+    def lxi_b(self):
+        self.incPC()
+        self.B = self.opc[str(int(self.PC,0))]
+        self.incPC()
+        self.C = self.opc[str(int(self.PC,0))]
+        self.incPC()
+
+    def lxi_d(self):
+        self.incPC()
+        self.D = self.opc[str(int(self.PC,0))]
+        self.incPC()
+        self.E = self.opc[str(int(self.PC,0))]
+        self.incPC()
+
+    def lxi_h(self):
+        self.incPC()
+        self.H = self.opc[str(int(self.PC,0))]
+        self.incPC()
+        self.L = self.opc[str(int(self.PC,0))]
+        self.incPC()
+
+    def lxi_sp(self):
+        self.incPC()
+        low = self.opc[str(int(self.PC,0))]
+        self.incPC()
+        high = self.opc[str(int(self.PC,0))]
+        self.incPC()
+        temp = '0x'+high+low
+        self.SP=temp
+############### add x ################################
+
+    def add(self,regx):
+        sum=hex(int('0x'+self.A,0)+int('0x'+regx,0))[2:]
         if(len(sum)>2):
             self.A=sum[-2:]
             if bin(int('0x'+self.A,0)).count('1') % 2 == 0:
@@ -346,6 +541,53 @@ class decoder:
             self.setCarry(False)
         print self.FLAG,'flag',self.A
         self.incPC()
+# add x
+    def add_c(self):
+        self.add(self.C)
+    def add_b(self):
+        self.add(self.B)
+    def add_a(self):
+        self.add(self.A)
+    def add_d(self):
+        self.add(self.D)
+    def add_e(self):
+        self.add(self.E)
+    def add_h(self):
+        self.add(self.H)
+    def add_l(self):
+        self.add(self.L)
+    def add_m(self):
+        self.add(self.M)
+
+############ sub x ####################
+    def sub(self):
+        sub=int('0x'+self.A,0)-int('0x'+regx,0)
+        if(sub<0):
+            self.setSign()
+            sub=256-sub
+            self.A=hex(sub)[:2]
+
+        
+
+        if(len(sum)>2):
+            self.A=sub[-2:]
+            if bin(int('0x'+self.A,0)).count('1') % 2 == 0:
+                self.setParity()
+            else:
+                self.setParity(False)
+            self.setCarry()
+            
+        else:
+            self.A=sub
+            if bin(int('0x'+self.A,0)).count('1') % 2 == 0:
+                self.setParity()
+            else:
+                self.setParity(False)
+            self.setCarry(False)
+        print self.FLAG,'flag',self.A
+        self.incPC()
+
+
 
     def incPC(self,i = 1):
             for x in range(0,i):

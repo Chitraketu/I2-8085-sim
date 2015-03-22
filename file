@@ -1,9 +1,5 @@
-mvi a,90h
-out 43h
-mvi a,23h
-out 40h
-mvi a,80h
-out 43h
-mvi a,25h
-in 40h
+lxi b,8001h
+mov a,b
+mvi e,45h
+add e
 hlt
