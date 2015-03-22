@@ -1,9 +1,4 @@
-mvi a,90h
-out 43h
-mvi a,23h
-out 40h
-mvi a,80h
-out 43h
-mvi a,25h
-in 40h
+mvi a,0bh
+ei
+sim
 hlt

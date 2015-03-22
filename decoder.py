@@ -283,6 +283,16 @@ class decoder:
         #PPI
         self.ppi = ppi.PPI()
 
+        #interrupt flag
+        self.INTFLAG = '0'
+
+        #interrupt services
+        self.int7_5 = '0x8fbf'
+        self.int6_5 = '0x8fb9'
+        self.int5_5 = '0x8fb3'
+        self.intVector = ''
+        self.intFlipFlop = '0'
+
     def show(self):
         print self.A,self.B,self.C
         for i in self.list:
@@ -293,11 +303,13 @@ class decoder:
         while self.opc[str(int(self.PC,0))] != '76':
             getattr(self,self.listfunc[self.listop.index(self.opc[str(int(self.PC,0))])])()
             print self.opc[str(int(self.PC,0))] 
+
     #data transfer
     #mov a,x functions
     def mov_a_a(self):
         print "hello chitra"
         self.A = self.A
+        
         self.PC = int(self.PC,0)
         self.PC += 1
         self.PC = hex(self.PC)
@@ -441,6 +453,30 @@ class decoder:
         print self.FLAG,'refined flag'         
         self.incPC()
 
+#for interrupt handling
+    def sim(self):
+        vari = bin(int('0x'+self.A,0))[2:]
+        if(len(vari)<8):
+            varii = '0'*(8 - len(vari)) + vari
+            vari = varii
+        vari = vari[4:]
+        if(vari[0] == '1'):
+            if(vari[1] == '0'):
+                self.intVector = self.int7_5
+            elif(vari[2] == '0'):
+                self.intVector = self.int6_5
+            elif(vari[3] == '0'):
+                self.intVector = self.int5_5
+            else:
+                print "none"
+        self.incPC()
+    def ei(self):
+        self.intFlipFlop = '1'
+        self.incPC()
+
+    def di(self):
+        self.intFlipFlop = '0'
+        self.incPC()
 
 #for the 8255 PPI
     def out(self):
@@ -484,7 +520,7 @@ class decoder:
             else:
                 print("illigal out")
         else:
-             print "illegal out for porta in mode 1 or 2"
+            print "illegal out for porta in mode 1 or 2"
         print "out_43"
 
     def out_43(self):
