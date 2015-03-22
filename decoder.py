@@ -304,6 +304,15 @@ class decoder:
             getattr(self,self.listfunc[self.listop.index(self.opc[str(int(self.PC,0))])])()
             print self.opc[str(int(self.PC,0))] 
 
+
+    def lhlm(self):
+        low = self.L
+        high = self.H
+        addr = '0x'+high+low
+        self.M = self.loadFromMemory(addr)
+
+
+
     #data transfer
     #mov a,x functions
     def mov_a_a(self):
@@ -365,6 +374,141 @@ class decoder:
                     self.PC += 1
                     self.PC = hex(self.PC)
 
+#logical operation goes here
+
+    def ana(self,regx):
+        rega = int('0x'+self.A,0)
+        regxx = int('0x'+regx,0)
+        andi = rega&regxx
+        andi = bin(andi)[2:]
+        if(len(andi)<8):
+            andi = '0'*(8-len(andi)) +andi
+        print andi
+        selfA = hex(int('0b'+andi,2))[2:]
+        if(len(selfA)<2):
+            selfA = '0'+selfA
+        self.A = selfA
+        self.incPC()
+
+    def ani(self):
+        self.incPC()
+        mem = self.opc[str(int(self.PC,0))]
+        self.ana(mem)
+
+    def ana_c(self):
+        self.ana(self.C)
+
+    def ana_b(self):
+        self.ana(self.B)
+
+
+    def ana_d(self):
+        self.ana(self.D)
+        
+    def ana_e(self):
+        self.ana(self.E)
+
+    def ana_h(self):
+        self.ana(self.H)
+
+    def ana_l(self):
+        self.ana(self.L)
+
+    def ana_m(self):
+        self.ana(self.M)
+
+    def ana_a(self):
+        self.ana(self.A)
+
+    def ora(self,regx):
+        rega = int('0x'+self.A,0)
+        regxx = int('0x'+regx,0)
+        andi = rega|regxx
+        andi = bin(andi)[2:]
+        print andi
+        if(len(andi)<8):
+            andi = '0'*(8-len(andi)) +andi
+        selfA = hex(int('0b'+andi,2))[2:]
+        if(len(selfA)<2):
+            selfA = '0'+selfA
+        self.A = selfA
+        self.incPC()
+
+    def ori(self):
+        self.incPC()
+        mem = self.opc[str(int(self.PC,0))]
+        self.ora(mem)
+
+
+    def ora_c(self):
+        self.ora(self.C)
+
+    def ora_d(self):
+        self.ora(self.D)
+        
+    def ora_b(self):
+        self.ora(self.B)
+
+    def ora_e(self):
+        self.ora(self.E)
+
+    def ora_h(self):
+        self.ora(self.H)
+
+    def ora_l(self):
+        self.ora(self.L)
+
+    def ora_m(self):
+        self.ora(self.M)
+
+    def ora_a(self):
+        self.ora(self.A)
+
+    def xra(self,regx):
+        rega = int('0x'+self.A,0)
+        regxx = int('0x'+regx,0)
+        andi = rega^regxx
+        print andi
+        andi = bin(andi)[2:]
+        if(len(andi)<8):
+            andi = '0'*(8-len(andi)) +andi
+        selfA = hex(int('0b'+andi,2))[2:]
+        if(len(selfA)<2):
+            selfA = '0'+selfA
+        self.A = selfA
+        print andi
+        self.incPC()
+
+    def xri(self):
+        self.incPC()
+        mem = self.opc[str(int(self.PC,0))]
+        self.xra(mem)
+
+    def xra_c(self):
+        self.xra(self.C)
+    
+    def xra_b(self):
+        self.xra(self.B)
+
+    def xra_d(self):
+        self.xra(self.D)
+        
+    def xra_e(self):
+        self.xra(self.E)
+
+    def xra_h(self):
+        self.xra(self.H)
+
+    def xra_l(self):
+        self.xra(self.L)
+
+    def xra_m(self):
+        self.xra(self.M)
+
+    def xra_a(self):
+        self.xra(self.A)
+
+
     def rlc(self):
         temp = bin(int('0x'+self.A,0))  
         if(len(temp)<10):
@@ -381,6 +525,80 @@ class decoder:
         print temp,binrotate,"rotated",self.A,self.FLAG
         self.incPC()
 
+    def cmp(self,regx):
+        if(self.A < regx):
+            self.setCarry()
+            self.setZero(False)
+        elif(self.A == regx):
+            self.setZero()
+            self.setCarry(False)
+        else:
+            self.setCarry(False)
+            self.setZero(False)
+        print self.A,"compared",self.FLAG
+        self.incPC()
+
+    def cpi(self):
+        self.incPC()
+        mem = self.opc[str(int(self.PC,0))]
+        self.cmp(mem)
+
+    def cmp_b(self):
+        self.cmp(self.B)
+
+    def cmp_c(self):
+        self.cmp(self.C)
+
+    def cmp_d(self):
+        self.cmp(self.D)
+
+    def cmp_e(self):
+        self.cmp(self.E)
+
+    def cmp_h(self):
+        self.cmp(self.H)
+
+    def cmp_l(self):
+        self.cmp(self.L)
+
+    def cmp_m(self):
+        self.cmp(self.M)
+
+    def cmp_a(self):
+        self.cmp(self.A)
+
+#branching operations are defined here
+    def call(self):
+        self.incPC()
+        low = self.opc[str(int(self.PC,0))]
+        self.incPC()
+        high = self.opc[str(int(self.PC,0))]
+        add = '0x' + high + low
+        self.incPC()
+        addr = self.PC[2:]
+        addlow = addr[2:]
+        addhigh = addr[:2]
+        self.saveToMemory(self.SP,addhigh)
+        self.SP = int(self.SP,0)-1
+        self.SP = hex(self.SP)
+        self.saveToMemory(self.SP,addlow)
+        self.SP = int(self.SP,0)-1
+        self.SP = hex(self.SP)
+        self.PC = add
+
+    def ret(self):
+        self.SP = int(self.SP,0)+1
+        self.SP = hex(self.SP)
+        if(self.opc.has_key(str(int(self.SP,0)))):
+               addlow = self.opc.pop(str(int(self.SP,0))) 
+        self.SP = int(self.SP,0)+1
+        self.SP = hex(self.SP)
+        if(self.opc.has_key(str(int(self.SP,0)))):
+               addhigh = self.opc.pop(str(int(self.SP,0))) 
+        add = '0x' + addhigh + addlow
+        self.PC = add
+
+
     def jmp(self):
         self.incPC()
         low = self.opc[str(int(self.PC,0))]
@@ -395,23 +613,98 @@ class decoder:
         else:
             self.incPC(3)
 
+    def jz(self):
+        if(self.FLAG[1] == '1'):
+            self.jmp()
+        else:
+            self.incPC(3)
+
+    def jnc(self):
+        if(self.FLAG[7] != '1'):
+            self.jmp()
+        else:
+            self.incPC(3)
+
+    def jc(self):
+        if(self.FLAG[7] == '1'):
+            self.jmp()
+        else:
+            self.incPC()
+
+#transfer operation goes here for the ldax and stax
+
     def ldax_b(self):
-        low = self.B
-        high = self.C
+        low = self.C
+        high = self.B
         addr = '0x'+high+low
         self.A = self.loadFromMemory(addr)
         self.incPC()
+
     def stax_b(self):
-        low = self.B
-        high = self.C
+        low = self.C
+        high = self.B
         addr = '0x'+high + low
         self.saveToMemory(addr,self.A)
         self.incPC()
+
+    def ldax_d(self):
+        low = self.E
+        high = self.D
+        addr = '0x'+high+low
+        self.A = self.loadFromMemory(addr)
+        self.incPC()
+
+    def stax_d(self):
+        low = self.E
+        high = self.D
+        addr = '0x'+high + low
+        self.saveToMemory(addr,self.A)
+        self.incPC()
+
+    def lhld(self):
+        low = self.L
+        high = self.H
+        addr = '0x'+high+low
+        self.A = self.loadFromMemory(addr)
+        self.incPC()
+
+    def shld(self):
+        low = self.L
+        high = self.H
+        addr = '0x'+high + low
+        self.saveToMemory(addr,self.A)
+        self.incPC()
+
+    def lda(self):
+        self.incPC()
+        low = self.opc[str(int(self.PC,0))]
+        self.incPC()
+        high = self.opc[str(int(self.PC,0))]
+        addr = '0x' + high +low
+        self.A = self.loadFromMemory(addr)
+        self.incPC() 
+        
+    def sta(self):
+        self.incPC()
+        low = self.opc[str(int(self.PC,0))]
+        self.incPC()
+        high = self.opc[str(int(self.PC,0))]
+        addr = '0x' + high +low
+        self.saveToMemory(addr,self.A)
+        self.incPC()
+#no operation
+    def nop(self):
+        self.incPC()
+
+
+
+#push and pop operation goes here for the push b and push psw and pop b and pop psw
+
     def push_b(self):
-        self.saveToMemory(self.SP,self.C)
+        self.saveToMemory(self.SP,self.B)
         self.SP = int(self.SP,0)-1
         self.SP = hex(self.SP)
-        self.saveToMemory(self.SP,self.B)
+        self.saveToMemory(self.SP,self.C)
         self.SP = int(self.SP,0)-1
         self.SP = hex(self.SP)
         self.incPC()
@@ -420,12 +713,54 @@ class decoder:
         self.SP = int(self.SP,0)+1
         self.SP = hex(self.SP)
         if(self.opc.has_key(str(int(self.SP,0)))):
-               self.B = self.opc.pop(str(int(self.SP,0))) 
+               self.C = self.opc.pop(str(int(self.SP,0))) 
         self.SP = int(self.SP,0)+1
         self.SP = hex(self.SP)
         if(self.opc.has_key(str(int(self.SP,0)))):
-               self.C = self.opc.pop(str(int(self.SP,0))) 
+               self.B = self.opc.pop(str(int(self.SP,0))) 
         self.incPC()
+
+    def push_d(self):
+        self.saveToMemory(self.SP,self.D)
+        self.SP = int(self.SP,0)-1
+        self.SP = hex(self.SP)
+        self.saveToMemory(self.SP,self.E)
+        self.SP = int(self.SP,0)-1
+        self.SP = hex(self.SP)
+        self.incPC()
+
+    def pop_d(self):
+        self.SP = int(self.SP,0)+1
+        self.SP = hex(self.SP)
+        if(self.opc.has_key(str(int(self.SP,0)))):
+               self.E = self.opc.pop(str(int(self.SP,0))) 
+        self.SP = int(self.SP,0)+1
+        self.SP = hex(self.SP)
+        if(self.opc.has_key(str(int(self.SP,0)))):
+               self.H = self.opc.pop(str(int(self.SP,0))) 
+        self.incPC()
+        
+    def push_h(self):
+        self.saveToMemory(self.SP,self.H)
+        self.SP = int(self.SP,0)-1
+        self.SP = hex(self.SP)
+        self.saveToMemory(self.SP,self.L)
+        self.SP = int(self.SP,0)-1
+        self.SP = hex(self.SP)
+        self.incPC()
+
+    def pop_h(self):
+        self.SP = int(self.SP,0)+1
+        self.SP = hex(self.SP)
+        if(self.opc.has_key(str(int(self.SP,0)))):
+               self.L = self.opc.pop(str(int(self.SP,0))) 
+        self.SP = int(self.SP,0)+1
+        self.SP = hex(self.SP)
+        if(self.opc.has_key(str(int(self.SP,0)))):
+               self.H = self.opc.pop(str(int(self.SP,0))) 
+        self.incPC()
+
+
     def push_psw(self):
         flag='0b'+self.FLAG
         flag=hex(int(flag,2))[2:]
@@ -437,6 +772,7 @@ class decoder:
         self.SP = int(self.SP,0)-1
         self.SP = hex(self.SP)
         self.incPC()
+
     def pop_psw(self):
         self.SP = int(self.SP,0)+1
         self.SP = hex(self.SP)
@@ -470,6 +806,7 @@ class decoder:
             else:
                 print "none"
         self.incPC()
+
     def ei(self):
         self.intFlipFlop = '1'
         self.incPC()
@@ -629,7 +966,7 @@ class decoder:
             temp = '0'+self.FLAG[1:]
         self.FLAG = temp
 
-    
+#these are the flags of the 8085 microprocessor    
 # d7 d6 d5 d4 d3 d2 d1 d0
 # S  Z  XX AC XX P  XX CY          
 
