@@ -1,5 +1,5 @@
-lxi b,8001h
-mov a,b
-mvi e,45h
-add e
+lxi b,4567h
+mvi a,45h
+ral
+rlc
 hlt

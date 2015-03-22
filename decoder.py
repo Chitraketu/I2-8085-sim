@@ -118,8 +118,8 @@ class decoder:
 'mov_m_a':'77',
 
 'mov_a_b':'78',
-'mov a_c':'79',
-'mov a_d':'7a',
+'mov_a_c':'79',
+'mov_a_d':'7a',
 'mov_a_e':'7b',
 'mov_a_h':'7c',
 'mov_a_l':'7d',
@@ -270,14 +270,14 @@ class decoder:
 
         #registers
         self.SP='0xff00'
-        self.A = ""
-        self.B = ""
-        self.C = ""
-        self.D = ""
-        self.E = ""
-        self.H = ""
-        self.L = ""
-        self.M = ""
+        self.A = "00"
+        self.B = "00"
+        self.C = "00"
+        self.D = "00"
+        self.E = "00"
+        self.H = "00"
+        self.L = "00"
+        self.M = "00"
         self.FLAG = "00000000"
 
         #PPI
@@ -293,17 +293,28 @@ class decoder:
         while self.opc[str(int(self.PC,0))] != '76':
             getattr(self,self.listfunc[self.listop.index(self.opc[str(int(self.PC,0))])])()
             print self.opc[str(int(self.PC,0))] 
+        self.showReg()
+    def showReg(self):
+        print "### registers ###"
+        print self.A,"self.a"
+        print self.B,"self.b"
+        print self.C,"self.c"
+        print self.D,"self.d"
+        print self.E,"self.e"
+        print self.H,"self.h"
+        print self.L,"self.l"
+        print self.M,"self.m"
+        print self.FLAG,"FLAG"
     #data transfer
 
     #mov a,x functions
     def mov(self,rega,regb):
-        rega = regb
         self.incPC()
-        return rega
+        return regb
  #mov commands for self.A
- ######### mov x,x #####################
+######### mov x,x #####################
     def mov_a_a(self):
-        self.A = self.mov(self.A,self.B)
+        self.A = self.mov(self.A,self.A)
     def mov_a_b(self):
         self.A = self.mov(self.A,self.B)
         print self.A
@@ -322,7 +333,7 @@ class decoder:
 
  #  mov b,X
     def mov_b_a(self):
-        self.B = self.mov(self.B,self.B)
+        self.B = self.mov(self.B,self.A)
     def mov_b_b(self):
         self.B = self.mov(self.B,self.B)
         print self.B
@@ -359,22 +370,22 @@ class decoder:
         self.C = self.mov(self.C,self.M)
 #mov d,x
     def mov_d_a(self):
-        self.A = self.mov(self.D,self.A)
+        self.D = self.mov(self.D,self.A)
     def mov_d_b(self):
-        self.A = self.mov(self.D,self.B)
+        self.D = self.mov(self.D,self.B)
         print self.A
     def mov_d_c(self):
-        self.A = self.mov(self.D,self.C)
+        self.D = self.mov(self.D,self.C)
     def mov_d_d(self):
-        self.A = self.mov(self.D,self.D)
+        self.D = self.mov(self.D,self.D)
     def mov_d_e(self):
-        self.A = self.mov(self.D,self.E)
+        self.D = self.mov(self.D,self.E)
     def mov_d_h(self):
-        self.A = self.mov(self.D,self.H)
+        self.D = self.mov(self.D,self.H)
     def mov_d_l(self):
-        self.A = self.mov(self.D,self.L)
+        self.D = self.mov(self.D,self.L)
     def mov_d_m(self):
-        self.A = self.mov(self.D,self.M)
+        self.D = self.mov(self.D,self.M)
 #mov e,x
     def mov_e_a(self):
         self.E = self.mov(self.E,self.A)
@@ -394,22 +405,22 @@ class decoder:
     def mov_e_m(self):
         self.E = self.mov(self.E,self.M)
 # moc h,x
-    def mov_c_a(self):
-        self.H = self.mov(self.H,self.B)
-    def mov_c_b(self):
+    def mov_h_a(self):
+        self.H = self.mov(self.H,self.A)
+    def mov_h_b(self):
         self.H = self.mov(self.H,self.B)
         print self.H
-    def mov_c_c(self):
+    def mov_h_c(self):
         self.H = self.mov(self.H,self.C)
-    def mov_c_d(self):
+    def mov_h_d(self):
         self.H = self.mov(self.H,self.D)
-    def mov_c_e(self):
+    def mov_h_e(self):
         self.H = self.mov(self.H,self.E)
-    def mov_c_h(self):
+    def mov_h_h(self):
         self.H = self.mov(self.H,self.H)
-    def mov_c_l(self):
+    def mov_h_l(self):
         self.H = self.mov(self.H,self.L)
-    def mov_c_m(self):
+    def mov_h_m(self):
         self.H = self.mov(self.H,self.M)
 # mov l,x
     def mov_l_a(self):
@@ -493,30 +504,30 @@ class decoder:
 ############# lxi_xx ##########################
     def lxi_b(self):
         self.incPC()
-        self.B = self.opc[str(int(self.PC,0))]
-        self.incPC()
         self.C = self.opc[str(int(self.PC,0))]
+        self.incPC()
+        self.B = self.opc[str(int(self.PC,0))]
         self.incPC()
 
     def lxi_d(self):
         self.incPC()
-        self.D = self.opc[str(int(self.PC,0))]
-        self.incPC()
         self.E = self.opc[str(int(self.PC,0))]
+        self.incPC()
+        self.D = self.opc[str(int(self.PC,0))]
         self.incPC()
 
     def lxi_h(self):
         self.incPC()
-        self.H = self.opc[str(int(self.PC,0))]
-        self.incPC()
         self.L = self.opc[str(int(self.PC,0))]
+        self.incPC()
+        self.H = self.opc[str(int(self.PC,0))]
         self.incPC()
 
     def lxi_sp(self):
         self.incPC()
-        low = self.opc[str(int(self.PC,0))]
+        high= self.opc[str(int(self.PC,0))]
         self.incPC()
-        high = self.opc[str(int(self.PC,0))]
+        low = self.opc[str(int(self.PC,0))]
         self.incPC()
         temp = '0x'+high+low
         self.SP=temp
@@ -559,36 +570,214 @@ class decoder:
     def add_m(self):
         self.add(self.M)
 
+# adc x
+    def adc(self,regx):
+        if(self.FLAG[7]=='1'):
+            sum=hex(int('0x'+self.A,0)+1+int('0x'+regx,0))[2:]
+            if(len(sum)>2):
+                self.A=sum[-2:]
+                if bin(int('0x'+self.A,0)).count('1') % 2 == 0:
+                    self.setParity()
+                else:
+                    self.setParity(False)
+                self.setCarry()
+            
+            else:
+                self.A=sum
+                if bin(int('0x'+self.A,0)).count('1') % 2 == 0:
+                    self.setParity()
+                else:
+                    self.setParity(False)
+                self.setCarry(False)
+            print self.FLAG,'flag',self.A
+            self.incPC()
+        else:
+            add(regx)
+
+    def adc_c(self):
+        self.adc(self.C)
+    def adc_b(self):
+        self.adc(self.B)
+    def adc_a(self):
+        self.adc(self.A)
+    def adc_d(self):
+        self.adc(self.D)
+    def adc_e(self):
+        self.adc(self.E)
+    def adc_h(self):
+        self.adc(self.H)
+    def adc_l(self):
+        self.adc(self.L)
+    def adc_m(self):
+        self.adc(self.M)
+
+
 ############ sub x ####################
-    def sub(self):
+    def sub(self,regx):
         sub=int('0x'+self.A,0)-int('0x'+regx,0)
         if(sub<0):
             self.setSign()
-            sub=256-sub
-            self.A=hex(sub)[:2]
-
-        
-
-        if(len(sum)>2):
-            self.A=sub[-2:]
-            if bin(int('0x'+self.A,0)).count('1') % 2 == 0:
-                self.setParity()
-            else:
-                self.setParity(False)
             self.setCarry()
-            
+            sub = 256+sub
+            self.A=hex(sub)[2:]
+        elif sub==0:
+            self.setZero()
+            self.A=hex(sub)[2:]
         else:
-            self.A=sub
-            if bin(int('0x'+self.A,0)).count('1') % 2 == 0:
-                self.setParity()
-            else:
-                self.setParity(False)
+            self.setSign(False)
             self.setCarry(False)
-        print self.FLAG,'flag',self.A
+            self.A=hex(sub)[2:]
+        self.setZero(False)
+        self.setAC(False)
+        if bin(int('0x'+self.A,0)).count('1') % 2 == 0:
+                self.setParity()
+        else:
+                self.setParity(False)
         self.incPC()
 
+    def sbb(self,regx):
+        if(self.FLAG[7]=='1'):
+            sub=int('0x'+self.A,0)-1-int('0x'+regx,0)
+            if(sub<0):
+                self.setSign()
+                self.setCarry()
+                sub = 256+sub
+                self.A=hex(sub)[2:]
+            elif sub==0:
+                self.setZero()
+                self.A=hex(sub)[2:]
+            else:
+                self.setSign(False)
+                self.setCarry(False)
+                self.A=hex(sub)[2:]
+            self.setZero(False)
+            self.setAC(False)
+            if bin(int('0x'+self.A,0)).count('1') % 2 == 0:
+                    self.setParity()
+            else:
+                    self.setParity(False)
+            self.incPC()
+        else:
+            sub(regx)
 
+# sub X
+    def sub_b(self):
+        self.sub(self.B)
+    def sub_a(self):
+        self.sub(self.A)
+    def sub_c(self):
+        self.sub(self.C)
+    def sub_d(self):
+        self.sub(self.D)
+    def sub_e(self):
+        self.sub(self.E)
+    def sub_h(self):
+        self.sub(self.H)
+    def sub_l(self):
+        self.sub(self.L)
+    def sub_m(self):
+        self.sub(self.M)
+# sbb x
+    def sbb_b(self):
+        self.sbb(self.B)
+    def sbb_a(self):
+        self.sbb(self.A)
+    def sbb_c(self):
+        self.sbb(self.C)
+    def sbb_d(self):
+        self.sbb(self.D)
+    def sbb_e(self):
+        self.sbb(self.E)
+    def sbb_h(self):
+        self.sbb(self.H)
+    def sbb_l(self):
+        self.sbb(self.L)
+    def sbb_m(self):
+        self.sbb(self.M)
 
+############ inr #############
+
+    def inr(self,regx):
+        temp=hex(int('0x'+regx,0)+1)[-2:]
+        if(temp=='00'):
+            self.setZero()
+        if bin(int('0x'+temp,0)).count('1') % 2 == 0:
+                    self.setParity()
+        else:
+                    self.setParity(False)
+        self.incPC()
+        return temp
+
+    def inr_a(self):
+        self.A=self.inr(self.A)
+    def inr_b(self):
+        self.B=self.inr(self.B)
+    def inr_c(self):
+        self.C=self.inr(self.C)
+    def inr_d(self):
+        self.D=self.inr(self.D)
+    def inr_e(self):
+        self.E=self.inr(self.E)
+    def inr_h(self):
+        self.H=self.inr(self.H)
+    def inr_l(self):
+        self.L=self.inr(self.L)
+    def inr_m(self):
+        self.M=self.inr(self.M)
+
+############# inx ############################
+    def inx_b(self):
+        num=self.B+self.C
+        if(num=='ffff'):
+            num='0000'
+            num=hex(int('0x'+num,0))[2:]
+        else:
+            num=hex(int('0x'+num,0)+1)[2:]
+        if(len(num)<4):
+            nums='0'*(4-len(num))+num
+            num=nums
+        self.B=num[:2]
+        self.C=num[2:]
+        self.incPC()
+
+    def inx_d(self):
+        num=self.D+self.E
+        if(num=='ffff'):
+            num='0000'
+            num=hex(int('0x'+num,0))[2:]
+        else:
+            num=hex(int('0x'+num,0)+1)[2:]
+        if(len(num)<4):
+            nums='0'*(4-len(num))+num
+            num=nums
+        self.D=num[:2]
+        self.E=num[2:]
+        self.incPC()
+    def inx_h(self):
+        num=self.H+self.L
+        if(num=='ffff'):
+            num='0000'
+            num=hex(int('0x'+num,0))[2:]
+        else:
+            num=hex(int('0x'+num,0)+1)[2:]
+        if(len(num)<4):
+            nums='0'*(4-len(num))+num
+            num=nums
+        self.H=num[:2]
+        self.L=num[2:]
+        self.incPC()
+
+########## immidiate #################
+    def adi(self):
+        self.incPC()
+        imd = self.opc[str(int(self.PC,0))]
+        self.add(imd)
+    def sui(self):
+        self.incPC()
+        imd = self.opc[str(int(self.PC,0))]
+        self.sub(imd)
+
+        
     def incPC(self,i = 1):
             for x in range(0,i):
                     self.PC = int(self.PC,0)
@@ -610,6 +799,58 @@ class decoder:
         self.A = hex(int(binrotate,2))[2:] 
         print temp,binrotate,"rotated",self.A,self.FLAG
         self.incPC()
+
+    def rrc(self):
+        temp=bin(int('0x'+self.A,0))
+        if(len(temp)<10):
+            temp2 = temp[:2] + '0'*(10 -len(temp)) + temp[2:]
+            temp = temp2
+        binfirst = temp[-1:]
+        print binfirst,"binfirst"
+        if(binfirst == '1'):
+              self.setCarry()
+        else:
+              self.setCarry(False)
+        binpart = binfirst+temp[2:9]
+        self.A = hex(int('0b'+binpart,2))[2:] 
+        print temp,"given",binpart,"binpart",self.A,self.FLAG
+        self.incPC()
+
+    def rar(self):
+        temp=bin(int('0x'+self.A,0))
+        if(len(temp)<10):
+            temp2 = temp[:2] + '0'*(10 -len(temp)) + temp[2:]
+            temp = temp2
+        binfirst = temp[-1:]
+        carry = self.FLAG[-1:]
+        if(binfirst == '1'):
+              self.setCarry()
+        else:
+              self.setCarry(False)
+        binfirst=carry
+        binpart = binfirst+temp[2:9]
+        print temp,"original",binpart,"rar",carry,"carry",self.FLAG
+        self.A = hex(int('0b'+binpart,2))[2:] 
+
+        self.incPC()
+    def ral(self):
+        temp = bin(int('0x'+self.A,0))  
+        if(len(temp)<10):
+            temp2 = temp[:2] + '0'*(10 -len(temp)) + temp[2:]
+            temp = temp2
+        binfirst=temp[2:3]
+        carry=self.FLAG[-1:]
+        if(binfirst == '1'):
+              self.setCarry()
+        else:
+              self.setCarry(False)
+        binfirst=carry
+        binpart = temp[3:]
+        binrotate = '0b'+binpart + binfirst
+        self.A = hex(int(binrotate,2))[2:] 
+        print temp,"original",binrotate,"ral",self.FLAG
+        self.incPC()
+
 
     def jmp(self):
         self.incPC()
@@ -835,7 +1076,6 @@ class decoder:
             temp = '0'+self.FLAG[1:]
         self.FLAG = temp
 
-    
 # d7 d6 d5 d4 d3 d2 d1 d0
 # S  Z  XX AC XX P  XX CY          
 
